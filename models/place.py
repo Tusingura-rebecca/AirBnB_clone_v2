@@ -8,10 +8,21 @@ from sqlalchemy.orm import relationship
 
 if storage_target == "db":
     place_amenity = Table("place_amenity", Base.metadata,
-                          Column("place_id", String(60), ForeignKey("place_id", onupdate="CASCACE", ondelete="CASCADE"), primary_key=True, nullable=False),
-                          Column("amenity_id", String(60), ForeignKey("amenity_id", onupdate="CASCACE", ondelete="CASCADE"), primary_key=True, nullable=False)
-                          )
-    
+                          Column("place_id", String(60),
+                                 ForeignKey(
+                                    "place_id",
+                                    onupdate="CASCACE",
+                                    ondelete="CASCADE"
+                                    ),
+                                 primary_key=True, nullable=False),
+                          Column("amenity_id", String(60),
+                                 ForeignKey(
+                                    "amenity_id",
+                                    onupdate="CASCACE",
+                                    ondelete="CASCADE"),
+                                 primary_key=True, nullable=False))
+
+
 class Place(BaseModel):
     """ A place to stay """
     if storage_target == "db":
@@ -27,7 +38,10 @@ class Place(BaseModel):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         reviews = relationship("Review", backref='place')
-        amenities = relationship("Amenity", secondary=place_amenity, backref="place_amenities", viewonly=False)
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
+                                 backref="place_amenities",
+                                 viewonly=False)
     else:
         city_id = ""
         user_id = ""
@@ -48,7 +62,7 @@ class Place(BaseModel):
     if storage_target != "db":
         @property
         def reviews(self):
-            """getter that returns a list of review instances related to the place"""
+            """getter, returns list of review instances related to the place"""
             from models.review import Review
             review_list = []
             all_reviews = storage.all(Review)
@@ -56,10 +70,10 @@ class Place(BaseModel):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
-        
+
         @property
         def amenities(self):
-            """getter that returns list of Amenity instances related to the place"""
+            """getter, returns Amenity instances list related to the place"""
             from models.amenity import Amenity
             amenity_list = []
             all_amenities = storage.all(Amenity)
@@ -67,7 +81,8 @@ class Place(BaseModel):
                 if amenity.place_id == self.id:
                     amenity_list.append(amenity)
             return amenity_list
-        
+
         @amenities.setter
         def amenities(Amenity):
+            """setter, adds amenity.id to amenity_ids"""
             Amenity.amenity_ids.append(Amenity.id)

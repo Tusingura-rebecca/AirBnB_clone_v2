@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""db_storage module: defines a class to manage database storage for hbnb clone"""
+"""db_storage module"""
 from os import getenv
 from sqlalchemy import create_engine
 from models.base_model import Base
@@ -44,12 +44,12 @@ class DBStorage:
 
     def all(self, cls=None):
         """query on the current database session"""
-        dict ={}
+        dict = {}
         for clss in classes:
             if cls is None or cls in classes[clss] or cls in clss:
                 objs = self.__session.query(classes[clss]).all()
                 for obj in objs:
-                    key = obj.__class__.__name__+ '.' + obj.id
+                    key = obj.__class__.__name__ + '.' + obj.id
                     dict[key] = obj
         return dict
 
@@ -69,5 +69,6 @@ class DBStorage:
     def reload(self):
         Base.metadata.ceate_all(self.__engine)
         # session threading
-        Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+        sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(sess)
         self.__session = Session

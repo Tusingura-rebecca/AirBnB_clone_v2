@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" City Module for HBNB project """
+""" City module"""
 from models.base_model import BaseModel
 from models import storage_target
 from sqlalchemy import Column, String, ForeignKey
@@ -11,8 +11,12 @@ class City(BaseModel):
     if storage_target == "db":
         __tablename__ = "cities"
         name = Column(String(128), nullable=False)
-        state_id = Column(String(60), ForeignKey("state_id"), nullable=False)
+        state_id = Column(String(60), ForeignKey("state.id"), nullable=False)
         places = relationship("Place", backref='cities')
     else:
         state_id = ""
         name = ""
+
+    def __init__(self, *args, **kwargs):
+        """initializes City"""
+        super().__init__(*args, **kwargs)

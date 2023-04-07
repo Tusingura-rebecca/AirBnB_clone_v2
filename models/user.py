@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class User"""
+"""User module"""
 from models.base_model import BaseModel
 from models import storage_target
 from sqlalchemy import Column, String
@@ -21,3 +21,7 @@ class User(BaseModel):
         password = ""
         first_name = ""
         last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        """initializes User"""
+        super().__init__(*args, **kwargs)

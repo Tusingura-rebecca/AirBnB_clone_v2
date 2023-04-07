@@ -141,5 +141,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 ```
 <br>
 
-<center> <h2>Authors</h2> </center>
+## Authors
 [Leroy Buliro](https://github.com/leroysb/)

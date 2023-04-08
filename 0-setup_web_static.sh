@@ -18,7 +18,7 @@ INDEX=\
     Holberton School
   </body>
 </html>"
-bash -c "echo -e '$INDEX' > /data/web_static/releases/test/index.html"
+bash -c "echo -e '$INDEX' | sudo tee '/data/web_static/releases/test/index.html' > /dev/null"
 
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -hR ubuntu:ubuntu /data/

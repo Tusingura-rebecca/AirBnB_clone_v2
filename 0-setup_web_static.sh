@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # sets up your web servers for the deployment of web_static
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y install nginx
-sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
-echo "Hello world!" | sudo tee '/data/web_static/releases/test/index.html' > /dev/null
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-sudo chown -hR ubuntu:ubuntu /data/
-sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
-sudo service nginx start
+apt-get update && \
+apt-get install -y nginx && \
+mkdir -p -m=755 /data/web_static/{releases/test,shared} || exit 0
+echo 'Holberton School' > /data/web_static/releases/test/index.html
+ln -sf /data/web_static/releases/test/ /data/web_static/current
+chown -hR ubuntu:ubuntu /data/
+insert='\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;}'
+sed -i "37i $insert" /etc/nginx/sites-available/default
+service nginx restart
+exit 0

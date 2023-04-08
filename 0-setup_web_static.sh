@@ -25,9 +25,23 @@ sudo chown -hR ubuntu:ubuntu /data/
 
 cp /etc/nginx/sites-available/default ./nginx_sites-available_default.backup
 
-#target='location / {'
-#insert='\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;}'
-#sudo sed -i "$insert" /etc/nginx/sites-available/default
-sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+SERVER_CONFIG=\
+"# Custom server configuration
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+
+        location /hbnb_static/ {
+                alias /data/web_static/current/;
+        }
+        location / {
+                try_files \$uri \$uri/ =404;
+        }
+}"
+
+bash -c "echo -e '$SERVER_CONFIG' | sudo tee '/etc/nginx/sites-available/default' > /dev/null"
 sudo service nginx restart
 exit 0

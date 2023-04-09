@@ -5,6 +5,7 @@ Fabric script that distributes an archive to your web servers
 """
 
 from os import path
+from datetime import datetime as dt
 from fabric.api import env, local, put, run
 
 env.user = 'ubuntu'

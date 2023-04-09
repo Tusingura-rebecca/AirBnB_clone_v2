@@ -14,7 +14,7 @@ env.key_filename = ['~/.ssh/alx.key', '~/.ssh/alx']
 
 def do_deploy(archive_path):
     """Distributes an archive to your web servers
-    
+
     Args:
         archive_path (str): archive path to distribute
     """

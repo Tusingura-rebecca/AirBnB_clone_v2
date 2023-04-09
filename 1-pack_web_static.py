@@ -3,16 +3,15 @@
 
 from fabric.api import local
 from datetime import datetime as dt
-from os.path import isdir
+from os import path
 
 
 def do_pack():
     """generates a .tgz archive"""
-    try:
-        if isdir("versions") is False:
-            local("mkdir versions")
-        filename = "versions/web_static_{:%Y%m%d%H%M%S}.tgz".format(dt.now())
-        local("tar -cvzf {} web_static".format(filename))
-        return filename
-    except:
+    file = "versions/web_static_{:%Y%m%d%H%M%S}.tgz".format(dt.now())
+    if path.isdir("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
+    return file

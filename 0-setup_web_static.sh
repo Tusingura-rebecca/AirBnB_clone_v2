@@ -6,7 +6,7 @@ sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
 sudo ufw enable
 
-sudo mkdir -p /data/web_static/{shared,releases/test}
+sudo mkdir -p /data/web_static/{shared,releases/test}/
 sudo chmod -R 755 /data/web_static/{shared,releases/test}
 #sudo mkdir -p -m=755 /data/web_static/{releases/test,shared}
 

@@ -4,27 +4,48 @@ Module 1-pack_web_static:
 Fabric script that distributes an archive to your web servers
 """
 
+from os import path
 from fabric.api import put, run, env
-from os.path import exists
-env.hosts = ['52.91.132.67', '54.237.56.213']
+
+env.user = 'ubuntu'
+env.hosts = ['100.24.74.255', 'ubuntu@52.86.146.141']
+env.key_filename = ['~/.ssh/alx.key', '~/.ssh/alx']
 
 
 def do_deploy(archive_path):
-    """distributes an archive to your web servers"""
-    if exists(archive_path) is False:
+    """Distributes an archive to your web servers
+    
+    Args:
+        archive_path (str): archive path to distribute
+    """
+    if path.isfile(archive_path) is False:
         return False
-    try:
-        filename = archive_path.split("/")[-1]
-        name = filename.split(".")[0]
-        target_path = "/data/web_static/releases/"
-        put(archive_path, "/tmp/")
-        run("mkdir -p {}{}/".format(target_path, name))
-        run("tar -xzf /tmp/{} -C {}{}/".format(filename, target_path, name))
-        run("rm /tmp/{}".format(filename))
-        run("mv {0}{1}/web_static/* {0}{1}/".format(target_path, name))
-        run("rm -rf {}{}/web_static".format(target_path, name))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {}{}/ /data/web_static/current".format(target_path, name))
-        return True
-    except:
+    target_path = "/data/web_static/releases/"
+    file = archive_path.split("/")[-1]
+    name = file.split(".")[0]
+
+    if put(archive_path, "/tmp/{}".format(file)).failed is True:
         return False
+    if run("rm -rf {}{}/".
+           format(target_path, name)).failed is True:
+        return False
+    if run("sudo mkdir -p {}{}/".
+           format(target_path, name)).failed is True:
+        return False
+    if run("sudo tar -xzf /tmp/{} -C {}{}/".
+           format(file, target_path, name)).failed is True:
+        return False
+    if run("rm /tmp/{}".format(file)).failed is True:
+        return False
+    if run("sudo mv {0:}{1:}/web_static/* "
+           "{0:}{1:}/".format(target_path, name)).failed is True:
+        return False
+    if run("sudo rm -rf {}{}/web_static".
+           format(target_path, name)).failed is True:
+        return False
+    if run("rm -rf /data/web_static/current").failed is True:
+        return False
+    if run("sudo ln -s {}{}/ /data/web_static/current".
+           format(target_path, name)).failed is True:
+        return False
+    return True

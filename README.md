@@ -142,5 +142,5 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 <br>
 
 ## Authors
-[Leroy Buliro](https://github.com/leroysb/)
-[Rebecca Tusingura](https://github.com/tusingura-rebecca/)
+1. [Rebecca Tusingura](https://github.com/tusingura-rebecca/)
+2. [Leroy Buliro](https://github.com/leroysb/)

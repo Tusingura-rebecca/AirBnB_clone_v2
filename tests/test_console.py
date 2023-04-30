@@ -43,7 +43,7 @@ class test_console(unittest.TestCase):
         result = style.check_files("console.py")
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
-        
+
     def test_docstring_conformance(self):
         """Test that we conform to pycodestyle."""
         self.assertIsNotNone(console.__doc__)
@@ -81,7 +81,7 @@ class test_console(unittest.TestCase):
             self.consol.onecmd("create qwerty")
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
-            
+
     def test_show(self):
         """Test show command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:

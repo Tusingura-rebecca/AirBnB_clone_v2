@@ -67,16 +67,22 @@ class test_amenity_docs(unittest.TestCase):
 
 
 class test_Amenity(test_basemodel):
-    """Tests the Amenity class"""
+    """
+    Test cases for the Amenity class
+    """
 
     def __init__(self, *args, **kwargs):
-        """Initializes the Amenity class"""
+        """
+        Initializes the Amenity class
+        """
         super().__init__(*args, **kwargs)
         self.name = "Amenity"
         self.value = Amenity
 
     def test_name2(self):
-        """Test that Amenity instance has valid attribute value for name"""
+        """
+        Test that Amenity instance has valid attribute value for name
+        """
         new = self.value()
         self.assertTrue(hasattr(new, "name"))
         self.assertEqual(type(new.name), str)
@@ -86,6 +92,8 @@ class test_Amenity(test_basemodel):
             self.assertEqual(new.name, "")
 
     def test_is_subclass(self):
-        """Test that State is a subclass of BaseModel"""
+        """
+        Test that State is a subclass of BaseModel
+        """
         new = self.value()
         self.assertIsInstance(new, BaseModel)

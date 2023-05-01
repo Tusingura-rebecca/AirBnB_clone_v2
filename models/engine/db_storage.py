@@ -33,12 +33,13 @@ class DBStorage:
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}',
-                                      pool_pre_ping=True.
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(HBNB_MYSQL_USER,
                                              HBNB_MYSQL_PWD,
                                              HBNB_MYSQL_HOST,
-                                             HBNB_MYSQL_DB))
+                                             HBNB_MYSQL_DB),
+                                             pool_pre_ping=True)
+        
         if HBNB_ENV == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -67,7 +68,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        Base.metadata.ceate_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         # session threading
         sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess)

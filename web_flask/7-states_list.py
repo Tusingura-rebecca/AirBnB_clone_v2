@@ -14,8 +14,8 @@ def states_list():
     """
     Fetchs data from the storage engine
     """
-    states = storage.all('State')
-    return render_template('templates/7-states_list.html', states=states)
+    states = sorted(list(storage.all("State").values()), key=lambda x: x.name)
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext

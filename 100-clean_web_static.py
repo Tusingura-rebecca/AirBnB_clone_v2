@@ -3,13 +3,12 @@
 Module 1-pack_web_static:
 Fabric script that distributes an archive to your web servers
 """
-
 import os
 from datetime import datetime as dt
 from fabric.api import env, local, lcd, cd, run
 
 env.user = 'ubuntu'
-env.hosts = ['100.24.74.255', '52.86.146.141']
+env.hosts = [os.getenv('WEB_01'), os.getenv('WEB_02')]
 env.key_filename = ['~/.ssh/alx.key', '~/.ssh/alx']
 
 

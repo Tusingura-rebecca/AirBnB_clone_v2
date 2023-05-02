@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" State Module """
+"""
+State Module
+"""
 import models
 from models.base_model import BaseModel, Base
 from models.city import City

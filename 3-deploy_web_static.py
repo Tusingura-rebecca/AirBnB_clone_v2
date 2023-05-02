@@ -4,13 +4,14 @@ Module 1-pack_web_static:
 Fabric script that distributes an archive to your web servers
 """
 
+from os import getenv
 from os import path
 from datetime import datetime as dt
 from fabric.api import env, local, put, run
 
 env.user = 'ubuntu'
-env.hosts = ['100.24.74.255', '52.86.146.141']
-env.key_filename = ['~/.ssh/alx.key', '~/.ssh/alx']
+env.hosts = [getenv('WEB_01'), getenv('WEB_02')]
+env.key_filename = ['~/.ssh/alx']
 
 
 def do_pack():

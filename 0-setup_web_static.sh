@@ -3,7 +3,6 @@
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo ufw allow 'Nginx HTTP'
-sudo ufw enable
 
 sudo mkdir -p -m=755 /data/web_static/{releases/test,shared}
 

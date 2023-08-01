@@ -1,51 +1,43 @@
 #!/usr/bin/python3
-"""
-Module 1-pack_web_static:
-Fabric script that distributes an archive to your web servers
-"""
-from os import getenv
-from os import path
-from fabric.api import put, run, env
+"""Fabric script (based on the file 1-pack_web_static.py) that
+distributes an archive to your web servers, using the function
+do_deploy."""
 
-env.user = 'ubuntu'
-env.hosts = ['100.25.177.100', ]
-env.key_filename = ['~/.ssh/alx']
+from datetime import datetime
+from fabric.api import *
+import shlex
+import os
+
+
+env.hosts = ['34.74.243.116', '3.239.3.209']
+env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to your web servers
+    """ Deploys """
+    if not os.path.exists(archive_path):
+        return False
+    try:
+        name = archive_path.replace('/', ' ')
+        name = shlex.split(name)
+        name = name[-1]
 
-    Args:
-        archive_path (str): archive path to distribute
-    """
-    if path.isfile(archive_path) is False:
-        return False
-    target_path = "/data/web_static/releases/"
-    file = archive_path.split("/")[-1]
-    name = file.split(".")[0]
+        wname = name.replace('.', ' ')
+        wname = shlex.split(wname)
+        wname = wname[0]
 
-    if put(archive_path, "/tmp/{}".format(file)).failed is True:
+        releases_path = "/data/web_static/releases/{}/".format(wname)
+        tmp_path = "/tmp/{}".format(name)
+
+        put(archive_path, "/tmp/")
+        run("mkdir -p {}".format(releases_path))
+        run("tar -xzf {} -C {}".format(tmp_path, releases_path))
+        run("rm {}".format(tmp_path))
+        run("mv {}web_static/* {}".format(releases_path, releases_path))
+        run("rm -rf {}web_static".format(releases_path))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(releases_path))
+        print("New version deployed!")
+        return True
+    except:
         return False
-    if run("rm -rf {}{}/".
-           format(target_path, name)).failed is True:
-        return False
-    if run("sudo mkdir -p {}{}/".
-           format(target_path, name)).failed is True:
-        return False
-    if run("sudo tar -xzf /tmp/{} -C {}{}/".
-           format(file, target_path, name)).failed is True:
-        return False
-    if run("rm /tmp/{}".format(file)).failed is True:
-        return False
-    if run("sudo mv {0:}{1:}/web_static/* "
-           "{0:}{1:}/".format(target_path, name)).failed is True:
-        return False
-    if run("sudo rm -rf {}{}/web_static".
-           format(target_path, name)).failed is True:
-        return False
-    if run("rm -rf /data/web_static/current").failed is True:
-        return False
-    if run("sudo ln -s {}{}/ /data/web_static/current".
-           format(target_path, name)).failed is True:
-        return False
-    return True
